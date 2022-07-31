@@ -1,0 +1,5 @@
+.idea/
+
+# I'm not sure exactly what "metadata project" files should be version controlled or not.
+project.xcworkspace/
+xcuserdata/
