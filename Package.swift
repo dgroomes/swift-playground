@@ -3,17 +3,17 @@
 import PackageDescription
 
 let package = Package(
-    name: "basic",
-    platforms: [
-        .macOS(.v12)
-    ],
-    products: [
-        .executable(name: "basic", targets: ["basic"]),
-    ],
-    dependencies: [],
-    targets: [
-        .executableTarget(
-            name: "basic",
-            dependencies: []),
-    ]
+        name: "swift-playground",
+        platforms: [
+            .macOS(.v12)
+        ],
+        products: [
+            .executable(name: "SwiftPlayground", targets: ["Runner"]),
+        ],
+        targets: [
+            .executableTarget(
+                    name: "Runner",
+                    dependencies: ["File"]),
+            .target(name: "File")
+        ]
 )
