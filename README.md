@@ -16,6 +16,11 @@ those concepts, it's effective to write sample scripts and code that does that. 
 effective to do that from the macOS SDK, which means I need to write a program in Swift or Objective-C. In 2022, Swift
 is the natural choice. So, this playground repository is me learning Swift.
 
+This project is implemented as a multi-module Swift project. I use the term "multi-module" in the general programming
+sense. Programming languages and their toolchains use specific language to describe modular program design. Swift programs
+built with the Swift Package Manager have an impressive amount of options when it comes to modularity. Just read the later
+section [Making Sense of the Swift Package Manager](#making-sense-of-the-swift-package-manager).
+
 
 ## Instructions
 
@@ -30,9 +35,12 @@ Follow these instructions to build and run a demo Swift program:
      ```text
      $ swift run
      Building for debugging...
-     [1/1] Linking basic
-     Build complete! (0.25s)
-     Hello, World!
+     [5/5] Linking SwiftPlayground
+     Build complete! (0.46s)
+     Welcome to my 'swift-playground'! Let's write some Swift code.
+     File 'README.md' has size 5504 bytes
+     File 'Package.swift' has size 448 bytes
+     File 'Sources/Runner/main.swift' has size 217 bytes
      ```
 
 ## Making Sense of the Swift Package Manager
@@ -87,10 +95,16 @@ General clean ups, TODOs and things I wish to implement for this project:
   and notice that this information is presented outside the context of Apple. (Of course Apple is still there but not in an overt way)
   This is pretty cool. Can I eject this project from Xcode (well, I'm using AppCode)?. Answer: no, this is not possible.
   [AppCode is not considered a lightweight IDE](https://intellij-support.jetbrains.com/hc/en-us/community/posts/360005062659-Can-I-get-Swift-code-completion-and-syntax-highlighting-in-IntelliJ-).
-* [ ] Implement something just a bit more interesting than "hello world"
-* [ ] IN PROGRESS How do you implement multi-module Swift projects? What does the directory layout look like? Where do I start?
+* [x] DONE Implement something just a bit more interesting than "hello world"
+* [x] DONE How do you implement multi-module Swift projects? What does the directory layout look like? Where do I start?
 * [ ] Implement something that starts another process, captures its output, and stops the process.
-
+* [ ] Heed the warning described by the [`FileManager.fileExists` docs](https://developer.apple.com/documentation/foundation/filemanager/1415645-fileexists)
+   * > Attempting to predicate behavior based on the current state of the file system or a particular file on the file
+       system is not recommended. Doing so can cause odd behavior or race conditions. It’s far better to attempt an
+       operation (such as loading a file or creating a directory), check for errors, and handle those errors gracefully
+       than it is to try to figure out ahead of time whether the operation will succeed.
+   * This is not something I've taken seriously in my Java code, but I'm happy to write my Swift more robustly in
+     this regard.  
 
 ## Reference
 
@@ -102,3 +116,5 @@ General clean ups, TODOs and things I wish to implement for this project:
   * > You can vend targets to other packages by defining products that include the targets.
     > 
     > A target may depend on other targets within the same package and on products vended by the package’s dependencies. 
+* [Apple Developer Docs: *FileManager*](https://developer.apple.com/documentation/foundation/filemanager)
+  * > A convenient interface to the contents of the file system, and the primary means of interacting with it.
