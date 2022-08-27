@@ -40,7 +40,7 @@ Follow these instructions to build and run a demo Swift program:
      Welcome to my 'swift-playground'! Let's write some Swift code.
      File 'README.md' has size 6270 bytes
      File 'Package.swift' has size 497 bytes
-     File 'Sources/Runner/main.swift' has size 1056 bytes
+     File 'Sources/SwiftPlayground/main.swift' has size 1056 bytes
      Hello 'echo' command! Calling you from a Swift program.
      ───────┬────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
      │ File: /Users/davidgroomes/repos/personal/swift-playground/README.md
@@ -108,7 +108,7 @@ General clean ups, TODOs and things I wish to implement for this project:
   [AppCode is not considered a lightweight IDE](https://intellij-support.jetbrains.com/hc/en-us/community/posts/360005062659-Can-I-get-Swift-code-completion-and-syntax-highlighting-in-IntelliJ-).
 * [x] DONE Implement something just a bit more interesting than "hello world"
 * [x] DONE How do you implement multi-module Swift projects? What does the directory layout look like? Where do I start?
-* [x] DONE Implement something that starts another process, captures its output, and stops the process.
+* [x] DONE Implement something that starts another process
 * [ ] Heed the warning described by the [`FileManager.fileExists` docs](https://developer.apple.com/documentation/foundation/filemanager/1415645-fileexists)
    * > Attempting to predicate behavior based on the current state of the file system or a particular file on the file
        system is not recommended. Doing so can cause odd behavior or race conditions. It’s far better to attempt an

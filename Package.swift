@@ -8,11 +8,11 @@ let package = Package(
             .macOS(.v12)
         ],
         products: [
-            .executable(name: "SwiftPlayground", targets: ["Runner"]),
+            .executable(name: "SwiftPlayground", targets: ["SwiftPlayground"]),
         ],
         targets: [
             .executableTarget(
-                    name: "Runner",
+                    name: "SwiftPlayground",
                     dependencies: ["File", "Process"]),
             .target(name: "File"),
             .target(name: "Process")
