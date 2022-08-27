@@ -13,7 +13,8 @@ let package = Package(
         targets: [
             .executableTarget(
                     name: "Runner",
-                    dependencies: ["File"]),
-            .target(name: "File")
+                    dependencies: ["File", "Process"]),
+            .target(name: "File"),
+            .target(name: "Process")
         ]
 )
