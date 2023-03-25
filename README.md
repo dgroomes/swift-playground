@@ -131,6 +131,7 @@ General clean ups, TODOs and things I wish to implement for this project:
    * This is not something I've taken seriously in my Java code, but I'm happy to write my Swift more robustly in
      this regard.
 * [x] DONE Compile/link/whatever a Swift program into a binary executable file
+* [x] DONE Write to a file. I want to know the boilerplate to write a new file and append to an existing one.
 
 
 ## Reference

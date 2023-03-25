@@ -1,11 +1,11 @@
 import File
 import Process
 
-print("Welcome to my 'swift-playground'! Let's write some Swift code.")
-
-summarizeFile(fileName: "README.md")
-summarizeFile(fileName: "Package.swift")
-summarizeFile(fileName: "Sources/SwiftPlayground/main.swift")
+do {
+    let message = "Welcome to my 'swift-playground'! Let's write some Swift code."
+    print(message)
+    log(message: message)
+}
 
 // Can we run regular commandline commands, like 'cat' or 'bat', from a Swift program?
 //
