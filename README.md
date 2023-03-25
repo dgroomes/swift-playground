@@ -53,6 +53,20 @@ Follow these instructions to build and run a demo Swift program:
      6   │ >
      7   │ > -- <cite>https://developer.apple.com/swift</cite>
      ```
+3. Build a binary
+   * Link the program into a binary executable file with the following command.
+   * ```shell
+     swift build
+     ```
+   * Run the program from the binary with the following command.
+   * ```shell
+     .build/arm64-apple-macosx/debug/SwiftPlayground
+     ```
+   * Tip: if you want to clean up old build files just to "make sure things are working" then use the following clean command.
+   * ```shell
+     swift package clean
+     ```
+
 
 ## Making Sense of the Swift Package Manager
 
@@ -115,7 +129,9 @@ General clean ups, TODOs and things I wish to implement for this project:
        operation (such as loading a file or creating a directory), check for errors, and handle those errors gracefully
        than it is to try to figure out ahead of time whether the operation will succeed.
    * This is not something I've taken seriously in my Java code, but I'm happy to write my Swift more robustly in
-     this regard.  
+     this regard.
+* [x] DONE Compile/link/whatever a Swift program into a binary executable file
+
 
 ## Reference
 
