@@ -4,7 +4,7 @@ import Process
 do {
     let message = "Welcome to my 'swift-playground'! Let's write some Swift code."
     print(message)
-    log(message: message)
+    log(message)
 }
 
 // Can we run regular commandline commands, like 'cat' or 'bat', from a Swift program?

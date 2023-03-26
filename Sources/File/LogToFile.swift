@@ -7,7 +7,6 @@ import Foundation
 
 private let filePath = "/usr/local/var/log/swift-playground.log"
 private let fileURL = URL(fileURLWithPath: filePath)
-private let newline = "\n".data(using: .utf8)!
 
 // Note: this is interesting. Swift doesn't have an init block but this is an idiom for accomplishing the same effect.
 private let loggerTimeFormatter = {
@@ -19,9 +18,9 @@ private let loggerTimeFormatter = {
 /**
  Write a message to the log file. The message will be formatted with a timestamp and a trailing newline.
  */
-public func log(message: String) {
+public func log(_ message: String) {
 
-    // Create the file if it does not already exist.
+    // Create the log file if it does not already exist.
     //
     // Note: this is a naive implementation of a logger, but we're just here for learning Swift.
     if !FileManager.default.fileExists(atPath: filePath) {
