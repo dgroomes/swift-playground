@@ -26,7 +26,8 @@ section [Making Sense of the Swift Package Manager](#making-sense-of-the-swift-p
 
 Follow these instructions to build and run a demo Swift program:
 
-1. Use Swift 5.5
+1. Pre-requisite: Swift
+   * I'm using Swift 5.8
 2. Build and run the program:
    * ```shell
      swift run
@@ -132,6 +133,7 @@ General clean ups, TODOs and things I wish to implement for this project:
      this regard.
 * [x] DONE Compile/link/whatever a Swift program into a binary executable file
 * [x] DONE Write to a file. I want to know the boilerplate to write a new file and append to an existing one.
+* [ ] Concurrency examples. Specifically, I'll start with `async/await`.
 
 
 ## Reference

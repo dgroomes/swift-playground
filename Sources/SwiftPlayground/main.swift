@@ -16,7 +16,7 @@ runToCompletion(at: "file:///bin/echo", arguments: ["Hello", "'echo'", "command!
 // This is cool. We can call "bat" and "bat" will colorize our README.md file. It just takes reading the man pages a bit
 // to understand that you need to tell "bat" that we're not calling from an interactive shell, so disabling paging is
 // required or else the process will just hang forever.
-runToCompletion(at: "file:///usr/local/Cellar/bat/0.21.0/bin/bat", arguments: [
+runToCompletion(at: "file:///opt/homebrew/bin/bat", arguments: [
     "/Users/davidgroomes/repos/personal/swift-playground/README.md",
     "--paging=never",
     "--color=always"
