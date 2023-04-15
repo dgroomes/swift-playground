@@ -1,10 +1,13 @@
 import File
 import Process
 
+// Let's init the file logger
+let logger = SimpleFileLogger()
+
 do {
     let message = "Welcome to my 'swift-playground'! Let's write some Swift code."
     print(message)
-    log(message)
+    logger.log(message)
 }
 
 // Can we run regular commandline commands, like 'cat' or 'bat', from a Swift program?

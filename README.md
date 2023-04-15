@@ -134,6 +134,8 @@ General clean ups, TODOs and things I wish to implement for this project:
 * [x] DONE Compile/link/whatever a Swift program into a binary executable file
 * [x] DONE Write to a file. I want to know the boilerplate to write a new file and append to an existing one.
 * [ ] Concurrency examples. Specifically, I'll start with `async/await`.
+* [x] DONE Clean up the logging stuff. Rebrand it as something like `FileLogger`
+  * I'm going to make a logger class.
 
 
 ## Reference
