@@ -133,7 +133,7 @@ General clean ups, TODOs and things I wish to implement for this project:
      this regard.
 * [x] DONE Compile/link/whatever a Swift program into a binary executable file
 * [x] DONE Write to a file. I want to know the boilerplate to write a new file and append to an existing one.
-* [ ] Concurrency examples. Specifically, I'll start with `async/await`.
+* [x] DONE Concurrency examples. Specifically, I'll start with `async/await`.
 * [x] DONE Clean up the logging stuff. Rebrand it as something like `FileLogger`
   * I'm going to make a logger class.
 
@@ -151,3 +151,7 @@ General clean ups, TODOs and things I wish to implement for this project:
 * [Apple Developer Docs: *FileManager*](https://developer.apple.com/documentation/foundation/filemanager)
   * > A convenient interface to the contents of the file system, and the primary means of interacting with it.
 * [Apple Developer Docs: *Process*](https://developer.apple.com/documentation/foundation/process)
+* [*The Swift Programming Language: Concurrency*](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/concurrency)
+  * > The concurrency model in Swift is built on top of threads, but you don’t interact with them directly.
+* [Apple Developer Docs / Swift Standard Library: *CheckedContinuation*](https://developer.apple.com/documentation/swift/checkedcontinuation)
+  * > A mechanism to interface between synchronous and asynchronous code, logging correctness violations.
