@@ -39,20 +39,18 @@ Follow these instructions to build and run a demo Swift program:
      [3/3] Linking SwiftPlayground
      Build complete! (0.33s)
      Welcome to my 'swift-playground'! Let's write some Swift code.
-     File 'README.md' has size 6270 bytes
-     File 'Package.swift' has size 497 bytes
-     File 'Sources/SwiftPlayground/main.swift' has size 1056 bytes
-     Hello 'echo' command! Calling you from a Swift program.
-     ───────┬────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-     │ File: /Users/davidgroomes/repos/personal/swift-playground/README.md
-     ───────┼────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
-     1   │ # swift-playground
-     2   │
-     3   │ 📚 Learning and exploring the Swift programming language.
-     4   │
-     5   │ > Swift. The powerful programming language that is also easy to learn.
-     6   │ >
-     7   │ > -- <cite>https://developer.apple.com/swift</cite>
+     
+     Let's explore how to run subprocesses from a Swift program.
+     The 'echo' command says hello!  (... and it was invoked from a Swift program)
+     
+     Let's explore concurrency by way of executing multiple 'sleep' subprocesses
+     Started task 3...
+     Started task 1...
+     Started task 2...
+     Task 1 completed after 7 seconds
+     Task 2 completed after 8 seconds
+     Task 3 completed after 9 seconds
+     The 'sleep' task #1 won the race!
      ```
 3. Build a binary
    * Link the program into a binary executable file with the following command.
@@ -136,6 +134,12 @@ General clean ups, TODOs and things I wish to implement for this project:
 * [x] DONE Concurrency examples. Specifically, I'll start with `async/await`.
 * [x] DONE Clean up the logging stuff. Rebrand it as something like `FileLogger`
   * I'm going to make a logger class.
+* [x] DONE Consolidate the example code in `main.swift`.
+* [ ] Do more concurrency examples. I want to take APIs that I wish supported `async/await`, and adapt them for use with
+  `async/await`. The `Process` API is a good candidate for this. However, I may be better off with simulated examples
+  using `sleep` or something, to reduce the scope of the project.
+* [ ] Move the process stuff to <https://github.com/dgroomes/macos-playground>. The `Process` API is really a concept
+  of the operating system APIs and not the Swift language. I want to keep this project focused on the Swift language.
 
 
 ## Reference

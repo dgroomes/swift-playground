@@ -3,29 +3,37 @@ import Foundation
 import Process
 import _Concurrency
 
-// Let's init the file logger
-let logger = SimpleFileLogger()
+/*
+ Let's explore the Swift programming language by writing some example code. This file is a mashup of unrelated snippets
+ of Swift code that help me "learn by doing".
+ */
+
+// I'm not sure what idiomatic logging looks like in Swift programs (or maybe more particularly, in macOS programs), but
+// I've created a simple logger that writes to a file.
+let fileLogger = SimpleFileLogger()
 
 do {
     let message = "Welcome to my 'swift-playground'! Let's write some Swift code."
     print(message)
-    logger.log(message)
+    fileLogger.log(message)
+
+    // I know it's not very popular, but I really like to take advantage of block-scope. In this case, the 'message'
+    // local variable is only available within the scope of the 'do' block. Standalone blocks are great!
 }
 
-// Can we run regular commandline commands, like 'cat' or 'bat', from a Swift program?
-//
-// Note: it would be nice to find the absolute URL from the symlink.
-//
-// Let's do 'echo' first. It's an easy one.
-runToCompletion(at: "file:///bin/echo", arguments: ["Hello", "'echo'", "command!", "Calling you from a", "Swift", "program."])
-// This is cool. We can call "bat" and "bat" will colorize our README.md file. It just takes reading the man pages a bit
-// to understand that you need to tell "bat" that we're not calling from an interactive shell, so disabling paging is
-// required or else the process will just hang forever.
-runToCompletion(at: "file:///opt/homebrew/bin/bat", arguments: [
-    "/Users/davidgroomes/repos/personal/swift-playground/README.md",
-    "--paging=never",
-    "--color=always"
-])
+/// Conveniently log a message to the console and to the file logger.
+///
+/// The '_' is a Swift feature that allows you to omit the parameter name when calling the function.
+func log(_ message: String) {
+    print(message)
+    fileLogger.log(message)
+}
+
+do {
+    log("")
+    log("Let's explore how to run subprocesses from a Swift program.")
+    runToCompletion(at: "file:///bin/echo", arguments: ["The 'echo' command says hello!", " (... and it was invoked from a Swift program)"])
+}
 
 /*
  Let's explore concurrency.
@@ -37,14 +45,16 @@ runToCompletion(at: "file:///opt/homebrew/bin/bat", arguments: [
  keywords.
  */
 
-/*
- Run the 'sleep' command as a subprocess and time how long it takes to complete.
-
- This function 'async-ifies' the 'Process' API. We like Swift's structured concurrency but it is not always available,
- especially in APIs that were created before async/await was introduced (Swift 5.5).
-
- This function returns a tuple of the task number and the duration it took to complete.
- */
+/// Run the 'sleep' command as a subprocess and time how long it takes to complete.
+///
+/// This function 'async-ifies' the 'Process' API. We like Swift's structured concurrency but it is not always available,
+/// especially in APIs that were created before async/await was introduced (Swift 5.5).
+///
+/// This function returns a tuple of the task number and the duration it took to complete.
+///
+/// - Parameter taskNumber:
+/// - Returns:
+/// - Throws:
 func runSleepCommandAsync(taskNumber: Int) async throws -> (Int, Duration) {
     let delay = Int.random(in: 3...10)
     let process = Process()
@@ -75,15 +85,20 @@ func runSleepCommandAsync(taskNumber: Int) async throws -> (Int, Duration) {
     return (taskNumber, duration)
 }
 
-// Start the race.
-async let sleep1 = try runSleepCommandAsync(taskNumber: 1)
-async let sleep2 = try runSleepCommandAsync(taskNumber: 2)
-async let sleep3 = try runSleepCommandAsync(taskNumber: 3)
+do {
+    log("")
+    log("Let's explore concurrency by way of executing multiple 'sleep' subprocesses")
 
-let results = try await [sleep1, sleep2, sleep3]
+    // Start the race.
+    async let sleep1 = try runSleepCommandAsync(taskNumber: 1)
+    async let sleep2 = try runSleepCommandAsync(taskNumber: 2)
+    async let sleep3 = try runSleepCommandAsync(taskNumber: 3)
 
-// Find the sleep subprocess that finished earlier.
-// Note: I'm surprised by the cryptic ordinal notation here. Interesting.
-let shortest = results.min(by: { $0.1 < $1.1 })!
+    let results = try await [sleep1, sleep2, sleep3]
 
-print("The 'sleep' task #\(shortest.0) won the race!")
+    // Find the sleep subprocess that finished earlier.
+    // Note: I'm surprised by the cryptic ordinal notation here. Interesting.
+    let shortest = results.min(by: { $0.1 < $1.1 })!
+
+    print("The 'sleep' task #\(shortest.0) won the race!")
+}
