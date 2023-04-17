@@ -137,8 +137,9 @@ General clean ups, TODOs and things I wish to implement for this project:
 * [x] DONE Consolidate the example code in `main.swift`.
 * [ ] Do more concurrency examples. I want to take APIs that I wish supported `async/await`, and adapt them for use with
   `async/await`. The `Process` API is a good candidate for this. However, I may be better off with simulated examples
-  using `sleep` or something, to reduce the scope of the project.
-* [ ] Move the process stuff to <https://github.com/dgroomes/macos-playground>. The `Process` API is really a concept
+  using `sleep` or something, to reduce the scope of the project. UPDATE: Yes I want to eliminate the process stuff; I
+  moved the `Subprocess` code to my other repo so now it's pretty out of place here.
+* [x] DONE Move the process stuff to <https://github.com/dgroomes/macos-playground>. The `Process` API is really a concept
   of the operating system APIs and not the Swift language. I want to keep this project focused on the Swift language.
 
 
