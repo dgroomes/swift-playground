@@ -29,17 +29,11 @@ func log(_ message: String) {
     fileLogger.log(message)
 }
 
-do {
-    log("")
-    log("Let's explore how to run subprocesses from a Swift program.")
-    runToCompletion(at: "file:///bin/echo", arguments: ["The 'echo' command says hello!", " (... and it was invoked from a Swift program)"])
-}
-
 /*
  Let's explore concurrency.
 
- We can continue to use subprocesses as a way to explore concurrency. Let's kick off multiple 'sleep' subprocesses
- and see them race to completion. We'll give them random delays between 3 and 10 seconds.
+ We use subprocesses as a way to explore concurrency. Let's kick off multiple 'sleep' subprocess and see them race to
+ completion. We'll give them random delays between 3 and 10 seconds.
 
  We'll use Swift's implementation of "structured concurrency", which means that we'll use the 'async' and 'await'
  keywords.
@@ -67,15 +61,15 @@ func runSleepCommandAsync(taskNumber: Int) async throws -> (Int, Duration) {
 
     try await withCheckedThrowingContinuation({ continuation in
         process.terminationHandler = { _ in
-            print("Task \(taskNumber) completed after \(delay) seconds")
+            log("Task \(taskNumber) completed after \(delay) seconds")
             continuation.resume()
         }
 
         do {
             try process.run()
-            print("Started task \(taskNumber)...")
+            log("Started task \(taskNumber)...")
         } catch {
-            print("Error occurred while running task \(taskNumber): \(error)")
+            log("Error occurred while running task \(taskNumber): \(error)")
             continuation.resume(throwing: error)
         }
     })
@@ -100,5 +94,5 @@ do {
     // Note: I'm surprised by the cryptic ordinal notation here. Interesting.
     let shortest = results.min(by: { $0.1 < $1.1 })!
 
-    print("The 'sleep' task #\(shortest.0) won the race!")
+    log("The 'sleep' task #\(shortest.0) won the race!")
 }

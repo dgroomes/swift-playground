@@ -13,8 +13,7 @@ let package = Package(
         targets: [
             .executableTarget(
                     name: "SwiftPlayground",
-                    dependencies: ["File", "Process"]),
-            .target(name: "File"),
-            .target(name: "Process")
+                    dependencies: ["File"]),
+            .target(name: "File")
         ]
 )

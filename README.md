@@ -40,15 +40,12 @@ Follow these instructions to build and run a demo Swift program:
      Build complete! (0.33s)
      Welcome to my 'swift-playground'! Let's write some Swift code.
      
-     Let's explore how to run subprocesses from a Swift program.
-     The 'echo' command says hello!  (... and it was invoked from a Swift program)
-     
      Let's explore concurrency by way of executing multiple 'sleep' subprocesses
-     Started task 3...
      Started task 1...
      Started task 2...
-     Task 1 completed after 7 seconds
-     Task 2 completed after 8 seconds
+     Started task 3...
+     Task 1 completed after 3 seconds
+     Task 2 completed after 4 seconds
      Task 3 completed after 9 seconds
      The 'sleep' task #1 won the race!
      ```
