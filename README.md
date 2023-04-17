@@ -134,7 +134,7 @@ General clean ups, TODOs and things I wish to implement for this project:
 * [x] DONE Clean up the logging stuff. Rebrand it as something like `FileLogger`
   * I'm going to make a logger class.
 * [x] DONE Consolidate the example code in `main.swift`.
-* [ ] IN PROGRESS Do more concurrency examples. I want to take APIs that I wish supported `async/await`, and adapt them for use with
+* [x] DONE (Partially; I'm not satisfied in my experience with continuations and futures, and the features of async in Swift like `async let`, but this will do for now.) Do more concurrency examples. I want to take APIs that I wish supported `async/await`, and adapt them for use with
   `async/await`. The `Process` API is a good candidate for this. However, I may be better off with simulated examples
   using `sleep` or something, to reduce the scope of the project.
 * [x] DONE Move the process stuff to <https://github.com/dgroomes/macos-playground>. The `Process` API is really a concept

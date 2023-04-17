@@ -13,8 +13,7 @@ let package = Package(
         targets: [
             .executableTarget(
                     name: "SwiftPlayground",
-                    dependencies: ["SwiftPlaygroundLogging", "SwiftPlaygroundConcurrency"]),
-            .target(name: "SwiftPlaygroundLogging"),
-            .target(name: "SwiftPlaygroundConcurrency")
+                    dependencies: ["SwiftPlaygroundLogging"]),
+            .target(name: "SwiftPlaygroundLogging")
         ]
 )
