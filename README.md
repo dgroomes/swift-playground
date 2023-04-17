@@ -11,10 +11,9 @@
 
 **NOTE**: This project was developed on macOS. It is for my own personal use.
 
-I'm interested in learning general OS-level things on macOS like how to start, stop and control processes. To learn
-those concepts, it's effective to write sample scripts and code that does that. And to do that, it's probably most
-effective to do that from the macOS SDK, which means I need to write a program in Swift or Objective-C. In 2022, Swift
-is the natural choice. So, this playground repository is me learning Swift.
+This project is for me to explore the Swift programming language, which is quite rich and at times difficult for me to
+wrangle. By contrast, my codebase <https://github.com/dgroomes/macos-playground> is designed to explore macOS platform
+APIs and macOS operating system concerns like process management. 
 
 This project is implemented as a multi-module Swift project. I use the term "multi-module" in the general programming
 sense. Programming languages and their toolchains use specific language to describe modular program design. Swift programs
@@ -40,14 +39,17 @@ Follow these instructions to build and run a demo Swift program:
      Build complete! (0.33s)
      Welcome to my 'swift-playground'! Let's write some Swift code.
      
-     Let's explore concurrency by way of executing multiple 'sleep' subprocesses
-     Started task 1...
-     Started task 2...
-     Started task 3...
-     Task 1 completed after 3 seconds
-     Task 2 completed after 4 seconds
-     Task 3 completed after 9 seconds
-     The 'sleep' task #1 won the race!
+     Let's explore concurrency by way of executing multiple simulated 'data fetch' operations.
+     Fetching 'inbox' data from an external source...
+     Fetching 'news' data from an external source...
+     Fetching 'photos' data from an external source...
+     Data fetch of 'news' complete!
+     Data fetch of 'photos' complete!
+     Data fetch of 'inbox' complete!
+     Found Fake data for 'inbox'
+     Found Fake data for 'photos'
+     Found Fake data for 'news'
+     All data fetches completed in 3.007364417 seconds.
      ```
 3. Build a binary
    * Link the program into a binary executable file with the following command.
@@ -132,10 +134,9 @@ General clean ups, TODOs and things I wish to implement for this project:
 * [x] DONE Clean up the logging stuff. Rebrand it as something like `FileLogger`
   * I'm going to make a logger class.
 * [x] DONE Consolidate the example code in `main.swift`.
-* [ ] Do more concurrency examples. I want to take APIs that I wish supported `async/await`, and adapt them for use with
+* [ ] IN PROGRESS Do more concurrency examples. I want to take APIs that I wish supported `async/await`, and adapt them for use with
   `async/await`. The `Process` API is a good candidate for this. However, I may be better off with simulated examples
-  using `sleep` or something, to reduce the scope of the project. UPDATE: Yes I want to eliminate the process stuff; I
-  moved the `Subprocess` code to my other repo so now it's pretty out of place here.
+  using `sleep` or something, to reduce the scope of the project.
 * [x] DONE Move the process stuff to <https://github.com/dgroomes/macos-playground>. The `Process` API is really a concept
   of the operating system APIs and not the Swift language. I want to keep this project focused on the Swift language.
 

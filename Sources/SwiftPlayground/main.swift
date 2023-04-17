@@ -32,67 +32,51 @@ func log(_ message: String) {
 /*
  Let's explore concurrency.
 
- We use subprocesses as a way to explore concurrency. Let's kick off multiple 'sleep' subprocess and see them race to
- completion. We'll give them random delays between 3 and 10 seconds.
+ We can use a simulated "data fetching" function that simulates fetching data from an external source, like a database,
+ or an HTTP API. These types of data fetching operations are asynchronous. I want to use Swift's implementation of
+ structured concurrency which basically just means that we'll use the 'async' and 'await' keywords.
 
- We'll use Swift's implementation of "structured concurrency", which means that we'll use the 'async' and 'await'
- keywords.
+ Also, I want to explore the common but sometimes perplexing problem of async-ifying synchronous APIs. Swift offer's
+ something called "continuations" that can help us with this problem. But, I've found these inflexible and I've had
+ better luck using futures and promises. In either case, I want to learn and explore this problem space.
  */
 
-/// Run the 'sleep' command as a subprocess and time how long it takes to complete.
+/// Simulate a blocking data fetch to an external source, like a database or an HTTP API.
 ///
-/// This function 'async-ifies' the 'Process' API. We like Swift's structured concurrency but it is not always available,
-/// especially in APIs that were created before async/await was introduced (Swift 5.5).
-///
-/// This function returns a tuple of the task number and the duration it took to complete.
-///
-/// - Parameter taskNumber:
-/// - Returns:
-/// - Throws:
-func runSleepCommandAsync(taskNumber: Int) async throws -> (Int, Duration) {
-    let delay = Int.random(in: 3...10)
-    let process = Process()
+/// It can be problematic to use this function directly from your main program logic in the case you want to do other
+/// operations while waiting for the data to be fetched. For example, in a UI program, you need to update elements in
+// the UI like a progress bar, and you can't do that if the main thread is blocked.
+func dataFetchBlocking(_ description: String) -> String {
+    log("Fetching '\(description)' data from an external source...")
+    sleep(3)
 
-    process.executableURL = URL(fileURLWithPath: "/bin/sleep")
-    process.arguments = ["\(delay)"]
+    log("Data fetch of '\(description)' complete!")
+    return "Fake data for '\(description)'"
+}
 
-    let clock = ContinuousClock()
-    let start: ContinuousClock.Instant = clock.now
-
-    try await withCheckedThrowingContinuation({ continuation in
-        process.terminationHandler = { _ in
-            log("Task \(taskNumber) completed after \(delay) seconds")
-            continuation.resume()
-        }
-
-        do {
-            try process.run()
-            log("Started task \(taskNumber)...")
-        } catch {
-            log("Error occurred while running task \(taskNumber): \(error)")
-            continuation.resume(throwing: error)
-        }
+/// This is an async version of the 'blockingDataFetch' function.
+func dataFetchAsync(_ description: String) async -> String {
+    await withCheckedContinuation({ continuation in
+        let result = dataFetchBlocking(description)
+        continuation.resume(returning: result)
     })
-
-    let end: ContinuousClock.Instant = clock.now
-    let duration: ContinuousClock.Instant.Duration = end - start // operator overloading, interesting!
-    return (taskNumber, duration)
 }
 
 do {
     log("")
-    log("Let's explore concurrency by way of executing multiple 'sleep' subprocesses")
+    log("Let's explore concurrency by way of executing multiple simulated 'data fetch' operations.")
 
-    // Start the race.
-    async let sleep1 = try runSleepCommandAsync(taskNumber: 1)
-    async let sleep2 = try runSleepCommandAsync(taskNumber: 2)
-    async let sleep3 = try runSleepCommandAsync(taskNumber: 3)
+    // Kick off all the fetch operations concurrently.
+    let clock = ContinuousClock()
+    let start = clock.now
+    async let dataFetchInbox = dataFetchAsync("inbox")
+    async let dataFetchPhotos = dataFetchAsync("photos")
+    async let dataFetchNews = dataFetchAsync("news")
 
-    let results = try await [sleep1, sleep2, sleep3]
-
-    // Find the sleep subprocess that finished earlier.
-    // Note: I'm surprised by the cryptic ordinal notation here. Interesting.
-    let shortest = results.min(by: { $0.1 < $1.1 })!
-
-    log("The 'sleep' task #\(shortest.0) won the race!")
+    // Await the results.
+    log("Found \(await dataFetchInbox)");
+    log("Found \(await dataFetchPhotos)");
+    log("Found \(await dataFetchNews)");
+    let end = clock.now
+    log("All data fetches completed in \(end - start).")
 }
