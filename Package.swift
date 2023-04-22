@@ -8,12 +8,11 @@ let package = Package(
             .macOS(.v13)
         ],
         products: [
-            .executable(name: "SwiftPlayground", targets: ["SwiftPlayground"]),
+            .executable(name: "SwiftPlaygroundFileLogging", targets: ["SwiftPlaygroundFileLogging"]),
+            .executable(name: "SwiftPlaygroundAsyncAwait", targets: ["SwiftPlaygroundAsyncAwait"]),
         ],
         targets: [
-            .executableTarget(
-                    name: "SwiftPlayground",
-                    dependencies: ["SwiftPlaygroundLogging"]),
-            .target(name: "SwiftPlaygroundLogging")
+            .executableTarget(name: "SwiftPlaygroundFileLogging"),
+            .executableTarget(name: "SwiftPlaygroundAsyncAwait")
         ]
 )
