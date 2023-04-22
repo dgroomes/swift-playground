@@ -1,11 +1,6 @@
 import Foundation
 
 /*
- Let's explore how to create and write to files from Swift. Let's consider the common use case of "writing log messages
- to a file". To do this, let's implement a mini logging system.
- */
-
-/*
  A simple logger interface.
  */
 protocol Logger {

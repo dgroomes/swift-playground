@@ -21,48 +21,92 @@ built with the Swift Package Manager have an impressive amount of options when i
 section [Making Sense of the Swift Package Manager](#making-sense-of-the-swift-package-manager).
 
 
+## Xcode Notes
+
+This project is a good fit for me to learn Xcode and take some notes. While Swift doesn't necessarily need to be
+developed in Xcode, nor does it even need to be developed on a Mac or even target an Apple system, I'm doing the
+mainstream thing and using Xcode. But I'm a newbie at Xcode. I'd like at least to understand the basics of the "power
+tools" when it comes to using Xcode. I want the familiar leverage of Intellij features like "Search everywhere",
+back/forward controls, "go to implementation", "refactor/rename". The big ones.
+
+Here are some miscellaneous notes/observations:
+
+* Xcode's markdown smarts doesn't parse/recognize code fences on the first line of a bullet point or numbered bullet.
+  It makes all the text below it gray. It looks like a workaround is to keep the contents of the first line empty and
+  and put the code fence on the next line. This seems like it's still legal markdown syntax because I see the numbers
+  render when I use a markdown renderer (and strangely, can't get Xcode to show a markdown render/preview? it's stuck in
+  a source code mode)
+
+
 ## Instructions
 
 Follow these instructions to build and run a demo Swift program:
 
 1. Pre-requisite: Swift
    * I'm using Swift 5.8
-2. Build and run the program:
-   * ```shell
-     swift run
+2. Build and run the "file and logging" program:
+   * 
+     ```shell
+     swift run SwiftPlaygroundFileLogging
      ```
    * It should look something like this:
      ```text
      $ swift run
      Building for debugging...
-     [3/3] Linking SwiftPlayground
-     Build complete! (0.33s)
-     Welcome to my 'swift-playground'! Let's write some Swift code.
-     
-     Let's explore concurrency by way of executing multiple simulated 'data fetch' operations.
-     Fetching 'inbox' data from an external source...
-     Fetching 'news' data from an external source...
-     Fetching 'photos' data from an external source...
-     Data fetch of 'news' complete!
-     Data fetch of 'photos' complete!
-     Data fetch of 'inbox' complete!
-     Found Fake data for 'inbox'
-     Found Fake data for 'photos'
-     Found Fake data for 'news'
-     All data fetches completed in 3.007364417 seconds.
+     [4/4] Linking SwiftPlaygroundFileLogging
+     Build complete! (0.76s)
+     Welcome to my 'swift-playground'! Let's write some Swift code that writes to a file.
+     The 'log' function is convenient. Calling code can use 'log' and the message gets printed to the screen and written to the log file.
+     ```
+   * The `run` command is convenient because it builds and runs the program. In the next step, let's try only building
+     the program, and not running it.
+   * Let's check the contents of the log file using the following command.
+     ```shell
+     cat /usr/local/var/log/swift-playground.log
+     ```
+   * The output will look something like this:
+     ```text
+     13:21:50: Welcome to my 'swift-playground'! Let's write some Swift code that writes to a file.
+     13:21:50: The 'log' function is convenient. Calling code can use 'log' and the message gets printed to the screen and written to the log file.
      ```
 3. Build a binary
    * Link the program into a binary executable file with the following command.
-   * ```shell
+   * 
+     ```shell
      swift build
      ```
    * Run the program from the binary with the following command.
-   * ```shell
-     .build/arm64-apple-macosx/debug/SwiftPlayground
+   * 
+     ```shell
+     .build/arm64-apple-macosx/debug/SwiftPlaygroundFileLogging
      ```
    * Tip: if you want to clean up old build files just to "make sure things are working" then use the following clean command.
-   * ```shell
+   * 
+     ```shell
      swift package clean
+     ```
+4. Build and run the "async/await" program:
+   * 
+     ```shell
+     swift run SwiftPlaygroundAsyncAwait
+     ```
+   * It should looke something like this:
+     ```text
+     $ swift run SwiftPlaygroundAsyncAwait
+     Building for debugging...
+     Build complete! (0.13s)
+     
+     Let's explore concurrency by way of executing multiple simulated 'data fetch' operations.
+     Fetching 'inbox' data from an external source...
+     Fetching 'photos' data from an external source...
+     Fetching 'news' data from an external source...
+     Data fetch of 'inbox' complete!
+     Data fetch of 'photos' complete!
+     Data fetch of 'news' complete!
+     Found Fake data for 'inbox'
+     Found Fake data for 'photos'
+     Found Fake data for 'news'
+     All data fetches completed in 3.005929541 seconds.
      ```
 
 
@@ -139,6 +183,11 @@ General clean ups, TODOs and things I wish to implement for this project:
   using `sleep` or something, to reduce the scope of the project.
 * [x] DONE Move the process stuff to <https://github.com/dgroomes/macos-playground>. The `Process` API is really a concept
   of the operating system APIs and not the Swift language. I want to keep this project focused on the Swift language.
+* [x] DONE Re-organize with multiple `main` entrypoints. I like that style better, especially if there are 3+ things to
+  showcase, it's awkward putting them in the same main.
+* [ ] Do someting the likes of reactive programming. I want something like the racing demo I previously
+  implemented. I think I can just use `Task` and it will be interesting enough. One goal is to actually learn some terms
+  (correctly) and relate them to the code example. 
 
 
 ## Reference

@@ -1,33 +1,5 @@
-import SwiftPlaygroundLogging
 import Foundation
-import Process
 import _Concurrency
-
-/*
- Let's explore the Swift programming language by writing some example code. This file is a mashup of unrelated snippets
- of Swift code that help me "learn by doing".
- */
-
-// I'm not sure what idiomatic logging looks like in Swift programs (or maybe more particularly, in macOS programs), but
-// I've created a simple logger that writes to a file.
-let fileLogger = SimpleFileLogger()
-
-do {
-    let message = "Welcome to my 'swift-playground'! Let's write some Swift code."
-    print(message)
-    fileLogger.log(message)
-
-    // I know it's not very popular, but I really like to take advantage of block-scope. In this case, the 'message'
-    // local variable is only available within the scope of the 'do' block. Standalone blocks are great!
-}
-
-/// Conveniently log a message to the console and to the file logger.
-///
-/// The '_' is a Swift feature that allows you to omit the parameter name when calling the function.
-func log(_ message: String) {
-    print(message)
-    fileLogger.log(message)
-}
 
 /*
  Let's explore concurrency.
@@ -47,10 +19,10 @@ func log(_ message: String) {
 /// operations while waiting for the data to be fetched. For example, in a UI program, you need to update elements in
 // the UI like a progress bar, and you can't do that if the main thread is blocked.
 func dataFetchBlocking(_ description: String) -> String {
-    log("Fetching '\(description)' data from an external source...")
+    print("Fetching '\(description)' data from an external source...")
     sleep(3)
 
-    log("Data fetch of '\(description)' complete!")
+    print("Data fetch of '\(description)' complete!")
     return "Fake data for '\(description)'"
 }
 
@@ -63,8 +35,8 @@ func dataFetchAsync(_ description: String) async -> String {
 }
 
 do {
-    log("")
-    log("Let's explore concurrency by way of executing multiple simulated 'data fetch' operations.")
+    print("")
+    print("Let's explore concurrency by way of executing multiple simulated 'data fetch' operations.")
 
     // Kick off all the fetch operations concurrently.
     let clock = ContinuousClock()
@@ -74,9 +46,9 @@ do {
     async let dataFetchNews = dataFetchAsync("news")
 
     // Await the results.
-    log("Found \(await dataFetchInbox)");
-    log("Found \(await dataFetchPhotos)");
-    log("Found \(await dataFetchNews)");
+    print("Found \(await dataFetchInbox)");
+    print("Found \(await dataFetchPhotos)");
+    print("Found \(await dataFetchNews)");
     let end = clock.now
-    log("All data fetches completed in \(end - start).")
+    print("All data fetches completed in \(end - start).")
 }
