@@ -83,9 +83,8 @@ func main() async {
     // unfortunate effect that the return value of the function is not an actual representation of the task, but of the
     // task result. This means you don't have an object (like a "promise", or "task", or "completable future" or
     // whatever you can relate this to in the programming languages that you personally know). You can do 'async let' but
-    // that variable is only awaitable, not cancellable. So, the solution is to wrap the task group in a 'Task'.
-    //
-    // Note: I might not need the task group... I need to think about this more.
+    // that variable is only awaitable, not cancellable. So, the solution is to wrap the withTaskGroup (awaitable
+    // function call) in a 'Task'. We can cancel this 'Task' at our leisure.
     let raceTask = Task {
         await withTaskGroup(of: Void.self) { group in
             for racer in racers {
@@ -96,11 +95,21 @@ func main() async {
         }
     }
     
-    // Cancel the race after 5 seconds. Pretend that
+    // Simulate a lightning storm after 5 seconds and cancel the race.
     do {
-        try await Task.sleep(nanoseconds: 5_000_000_000)        
+        try await Task.sleep(nanoseconds: 5_000_000_000)
+        // Because we used a task group, and we wrapped it in a Task (raceTask), we can conveniently cancel this
+        // wrapper-task which propagates the cancellation to all the children tasks. Alternatively, if we had a reference
+        // to the list of the individual racer tasks, we could await all of them. That would work.
         raceTask.cancel()
         print("\n⚡️ Lightning was spotted! The race is cancelled due to severe weather.\n")
+    
+        // Remember, when we called 'raceTask.cancel', that didn't actually "stop the execution" of those tasks like
+        // you might think it does (by contrast, think about the Unix 'kill' command which you can use to force kill
+        // a process). The 'raceTask.cancel' is more like a signal. When we do 'await raceTask.value', this function
+        // suspends which frees up the backing thread to actually execute the racing tasks. The racing tasks have a
+        // chance to execute some "cancellation reaction" code, which is usually where you would have clean up
+        // operations or the like.
         await raceTask.value
     } catch {
         print("Unexpected. The cancellation task was itself cancelled.")
