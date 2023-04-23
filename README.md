@@ -36,6 +36,10 @@ Here are some miscellaneous notes/observations:
   and put the code fence on the next line. This seems like it's still legal markdown syntax because I see the numbers
   render when I use a markdown renderer (and strangely, can't get Xcode to show a markdown render/preview? it's stuck in
   a source code mode)
+* I can't use refactorings, they were greyed out. I had to resort to the tacky "delete internal files" trick and
+  thank you very much to [this StackOverflow Q&A](https://stackoverflow.com/a/47425586). To be fair, I have to do stuff
+  like that in Intellij too, so it's normal, although it's a head scratcher. UPDATE: it's grayed out again.. so
+  frustrating. I use 'extract variable' to make sense of the return types and break the code down so I can learn it. 
 
 
 ## Instructions
@@ -121,11 +125,14 @@ Follow these instructions to build and run a demo Swift program:
      We have 5 contestants running in the event. Let's see who is the fastest runner.
      ... and they're off and running!
      
-     Flash 🏆 finished in position 1. They are the winner!
+     Speedster 🏆 finished in position 1. They are the winner!
      Blaze finished in position 2.
-     Speedster finished in position 3.
-     Lightning finished in position 4.
-     Bolt finished in position 5.
+     Bolt finished in position 3.
+     Zoom finished in position 4.
+     
+     ⚡️ Lightning was spotted! The race is cancelled due to sever weather.
+     
+     Flash made a good attempt, but did not finish the race.
      ``` 
 
 
@@ -172,6 +179,16 @@ Here are some notable quotes from those docs:
 > By convention, a target includes any source files located in the `Sources/<target-name>` directory.
 
 
+## Swift Language Notes
+
+Swift is far more feature-rich than I expected. I had heard it compared to Kotlin, but I've found the type system to be
+in the stratosphere of complexity like TypeScript and Rust. Kotlin is not like this. On the other hand, I might be
+underestimating Kotlin's complexity especially when it comes to Coroutines, because I've found Swift concurrency language
+features to also be sophisticated (not a bad thing; just a learning curve). I have an especially hard time with
+`async let`, because I don't know how to think of this in terms of a type. It makes me appreciate how you can just `await`
+a `Promise` in JavaScript.
+
+
 ## Wish List
 
 General clean ups, TODOs and things I wish to implement for this project:
@@ -207,6 +224,9 @@ General clean ups, TODOs and things I wish to implement for this project:
 * [x] DONE Do something with actors. I want something like the racing demo I previously implemented. I think I can just use
   `Task` and it will be interesting enough. One goal is to actually learn some terms (correctly) and relate them to the
   code example. 
+* [x] DONE Showcase task cancellation. The value proposition of `Task` is that they let you move on to other
+  code paths and then later *revisit* the `Task` to await its completion or to cancel it. I don't really grok how
+  cancellation looks in the code yet. Let's try it in the actors/racing demo. 
 
 
 ## Reference
@@ -228,3 +248,5 @@ General clean ups, TODOs and things I wish to implement for this project:
   * > A mechanism to interface between synchronous and asynchronous code, logging correctness violations.
 * [Apple WWDC video: *Protect mutable state with Swift actors*](https://developer.apple.com/videos/play/wwdc2021/10133)
   * Note: I had to look for this video because the word "actors" is not in the [language book](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/basicoperators). That's a language feature. The video is quite nice, there's even a transcript!
+  * UPDATE: I did find it in the Swift book, it's in "Concurrency", it's just that "actors" can't be found from the
+    search feature or from a "Cmd + F" on the main page. 

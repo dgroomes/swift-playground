@@ -39,15 +39,22 @@ actor RaceManager {
 // Simulate the racing competition for an individual contestant. E.g. how long will it take them to look to run to the
 // finish line?
 func race(name: String, raceManager: RaceManager) async {
-    // Generate a random sleep duration between 1 and 5 seconds.
-    let sleepDuration = UInt64.random(in: 1_000_000_000...5_000_000_000)
+    // Generate a random sleep duration between 1 and 8 seconds.
+    let sleepDuration = UInt64.random(in: 1_000_000_000...8_000_000_000)
 
     // Simulate the racer's race with Task.sleep. Task.sleep is a suspending function that does not block the thread.
     // It allows other tasks to make forward progress. Those tasks are likely designed to also "do some work, suspend".
     // This design has a lot of advantages: there can be many tasks running concurrently (but NOT in parallel), their
     // data access is safe thanks to actors, and only one OS thread is ever used. In this way, we are being good
     // stewards of system resources.
-    try? await Task.sleep(nanoseconds: sleepDuration)
+    do {
+        try await Task.sleep(nanoseconds: sleepDuration)
+    } catch {
+        // If the sleep throws an error, it is a CancellationError. The race is forecefully ended after 5 seconds and
+        // any racers who haven't finished must stop and what off the track.
+        print("\(name) made a good attempt, but did not finish the race.")
+        return
+    }
 
     // Call the crossTheFinishLine method on the race manager.
     // This method will return the racer's finishing position.
@@ -67,17 +74,36 @@ func main() async {
     let raceManager = RaceManager()
 
     // Start the racing tasks concurrently.
-    let racers = ["Lightning", "Bolt", "Flash", "Speedster", "Blaze"]
+    let racers = ["Zoom", "Bolt", "Flash", "Speedster", "Blaze"]
     print("📢 Welcome to the 42nd annual Swift Track & Field competition.")
     print("We have \(racers.count) contestants running in the event. Let's see who is the fastest runner.")
     print("... and they're off and running!\n")
     
-    await withTaskGroup(of: Void.self) { group in
-        for racer in racers {
-            group.addTask {
-                await race(name: racer, raceManager: raceManager)
+    // Structured concurrency is a wrapping-heavy feature of Swift. The APIs tend to be 'async' functions which has the
+    // unfortunate effect that the return value of the function is not an actual representation of the task, but of the
+    // task result. This means you don't have an object (like a "promise", or "task", or "completable future" or
+    // whatever you can relate this to in the programming languages that you personally know). You can do 'async let' but
+    // that variable is only awaitable, not cancellable. So, the solution is to wrap the task group in a 'Task'.
+    //
+    // Note: I might not need the task group... I need to think about this more.
+    let raceTask = Task {
+        await withTaskGroup(of: Void.self) { group in
+            for racer in racers {
+                group.addTask {
+                    await race(name: racer, raceManager: raceManager)
+                }
             }
         }
+    }
+    
+    // Cancel the race after 5 seconds. Pretend that
+    do {
+        try await Task.sleep(nanoseconds: 5_000_000_000)        
+        raceTask.cancel()
+        print("\n⚡️ Lightning was spotted! The race is cancelled due to severe weather.\n")
+        await raceTask.value
+    } catch {
+        print("Unexpected. The cancellation task was itself cancelled.")
     }
 }
 
