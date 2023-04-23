@@ -90,7 +90,7 @@ Follow these instructions to build and run a demo Swift program:
      ```shell
      swift run SwiftPlaygroundAsyncAwait
      ```
-   * It should looke something like this:
+   * It should look something like this:
      ```text
      $ swift run SwiftPlaygroundAsyncAwait
      Building for debugging...
@@ -108,6 +108,25 @@ Follow these instructions to build and run a demo Swift program:
      Found Fake data for 'news'
      All data fetches completed in 3.005929541 seconds.
      ```
+5. Build and run the "actors" program:
+   * 
+     ```shell
+     swift run SwiftPlaygroundActors
+     ```
+   * The output will look something like this:
+     ```text
+     Let's implement something with actors and level up our Swift concurrency skills.
+     
+     📢 Welcome to the 42nd annual Swift Track & Field competition.
+     We have 5 contestants running in the event. Let's see who is the fastest runner.
+     ... and they're off and running!
+     
+     Flash 🏆 finished in position 1. They are the winner!
+     Blaze finished in position 2.
+     Speedster finished in position 3.
+     Lightning finished in position 4.
+     Bolt finished in position 5.
+     ``` 
 
 
 ## Making Sense of the Swift Package Manager
@@ -185,9 +204,9 @@ General clean ups, TODOs and things I wish to implement for this project:
   of the operating system APIs and not the Swift language. I want to keep this project focused on the Swift language.
 * [x] DONE Re-organize with multiple `main` entrypoints. I like that style better, especially if there are 3+ things to
   showcase, it's awkward putting them in the same main.
-* [ ] Do someting the likes of reactive programming. I want something like the racing demo I previously
-  implemented. I think I can just use `Task` and it will be interesting enough. One goal is to actually learn some terms
-  (correctly) and relate them to the code example. 
+* [x] DONE Do something with actors. I want something like the racing demo I previously implemented. I think I can just use
+  `Task` and it will be interesting enough. One goal is to actually learn some terms (correctly) and relate them to the
+  code example. 
 
 
 ## Reference
@@ -207,3 +226,5 @@ General clean ups, TODOs and things I wish to implement for this project:
   * > The concurrency model in Swift is built on top of threads, but you don’t interact with them directly.
 * [Apple Developer Docs / Swift Standard Library: *CheckedContinuation*](https://developer.apple.com/documentation/swift/checkedcontinuation)
   * > A mechanism to interface between synchronous and asynchronous code, logging correctness violations.
+* [Apple WWDC video: *Protect mutable state with Swift actors*](https://developer.apple.com/videos/play/wwdc2021/10133)
+  * Note: I had to look for this video because the word "actors" is not in the [language book](https://docs.swift.org/swift-book/documentation/the-swift-programming-language/basicoperators). That's a language feature. The video is quite nice, there's even a transcript!

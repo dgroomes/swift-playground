@@ -10,9 +10,11 @@ let package = Package(
         products: [
             .executable(name: "SwiftPlaygroundFileLogging", targets: ["SwiftPlaygroundFileLogging"]),
             .executable(name: "SwiftPlaygroundAsyncAwait", targets: ["SwiftPlaygroundAsyncAwait"]),
+            .executable(name: "SwiftPlaygroundActors", targets: ["SwiftPlaygroundActors"]),
         ],
         targets: [
             .executableTarget(name: "SwiftPlaygroundFileLogging"),
-            .executableTarget(name: "SwiftPlaygroundAsyncAwait")
+            .executableTarget(name: "SwiftPlaygroundAsyncAwait"),
+            .executableTarget(name: "SwiftPlaygroundActors")
         ]
 )
