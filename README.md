@@ -119,21 +119,24 @@ Follow these instructions to build and run a demo Swift program:
      ```
    * The output will look something like this:
      ```text
-     Let's implement something with actors and level up our Swift concurrency skills.
-     
-     📢 Welcome to the 42nd annual Swift Track & Field competition.
-     We have 5 contestants running in the event. Let's see who is the fastest runner.
-     ... and they're off and running!
-     
-     Speedster 🏆 finished in position 1. They are the winner!
-     Blaze finished in position 2.
-     Bolt finished in position 3.
-     Zoom finished in position 4.
-     
-     ⚡️ Lightning was spotted! The race is cancelled due to sever weather.
-     
-     Flash made a good attempt, but did not finish the race.
-     ``` 
+     [<_NSMainThread: 0x6000017040c0>{number = 1, name = main}] Let's implement something with actors and level up our Swift concurrency skills.
+     [<_NSMainThread: 0x6000017040c0>{number = 1, name = main}] 
+     [<NSThread: 0x600001704340>{number = 2, name = (null)}] 📢 Welcome to the 42nd annual Swift Track & Field competition.
+     [<NSThread: 0x600001704340>{number = 2, name = (null)}] We have 5 contestants running in the event. Let's see who is the fastest runner.
+     [<NSThread: 0x600001704340>{number = 2, name = (null)}] ... and they're off and running!
+     [<NSThread: 0x600001704340>{number = 2, name = (null)}] 
+     [<NSThread: 0x60000170c040>{number = 3, name = (null)}] Zoom 🏆 finished in position 1 with a time of 1.345394458 seconds. They are the winner!
+     [<NSThread: 0x60000170c040>{number = 3, name = (null)}] Speedster finished in position 2 with a time of 1.611739541 seconds. [isStopped: false]
+     [<NSThread: 0x60000170c040>{number = 3, name = (null)}] Blaze finished in position 3 with a time of 3.345048375 seconds. [isStopped: false]
+     [<NSThread: 0x60000170c080>{number = 4, name = (null)}] 
+     [<NSThread: 0x60000170c080>{number = 4, name = (null)}] ⚡️ Lightning was spotted! The race is stopped due to severe weather.
+     [<NSThread: 0x60000170c080>{number = 4, name = (null)}] The race went on for 5.328475375000001 seconds.
+     [<NSThread: 0x60000170c080>{number = 4, name = (null)}] 
+     [<NSThread: 0x60000170c080>{number = 4, name = (null)}] Flash made a good attempt, but did not finish the race. They ran for 5.32886775 seconds.
+     [<NSThread: 0x60000170c080>{number = 4, name = (null)}] Bolt made a good attempt, but did not finish the race. They ran for 5.328921791000001 seconds.
+     ```
+   * Concurrent programming is tricky. Here is what happened when I didn't have the check for `isStopped`.
+   * <img alt="concurrency-programming-error.png" src="concurrency-programming-error.png" width="1200"/>
 
 
 ## Making Sense of the Swift Package Manager
@@ -226,7 +229,10 @@ General clean ups, TODOs and things I wish to implement for this project:
   code example. 
 * [x] DONE Showcase task cancellation. The value proposition of `Task` is that they let you move on to other
   code paths and then later *revisit* the `Task` to await its completion or to cancel it. I don't really grok how
-  cancellation looks in the code yet. Let's try it in the actors/racing demo. 
+  cancellation looks in the code yet. Let's try it in the actors/racing demo.
+* [x] DONE Push more of the race management into the RaceManager actor. I think I need to synchronize the 'print'
+  statements because the program techically can race if the 'raceTask.cancel' literally triggers the other tasks to
+  unsuspend on a different/available core (I'm 80% sure). 
 
 
 ## Reference

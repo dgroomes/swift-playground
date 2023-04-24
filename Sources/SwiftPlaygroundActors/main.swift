@@ -1,10 +1,17 @@
 import Foundation
 
-print("Let's implement something with actors and level up our Swift concurrency skills.\n")
+/// Print a message but also the current thread. This should help us understand the threading model of Swift and specifically of Swift features like tasks, actors, and
+/// async/await.
+func log(_ message: String) {
+    print("[\(Thread.current.description)] \(message)")
+}
+
+log("Let's implement something with actors and level up our Swift concurrency skills.")
+log("")
 
 /*
  To learn about actors, let's invent a sample domain. Let's have multiple tasks compete against one another other in a
- simulated "race to the finish line" competition. The first task to finish is the winner. We'll simulate each task's
+ simulated "race to the finish line" competition. The first task to finish is tƒhe winner. We'll simulate each task's
  racing behavior (from start to finish) with the 'sleep' function over a random duration. When the first task completes,
  it will reference some "finishOrder" shared mutable state and declare itself the winner for finishing first. The
  other tasks will see, from the "finishOrder" state, that they did not finish first.
@@ -24,15 +31,63 @@ actor RaceManager {
     // we would have to carefully "code our way around" a correct/semantic data access to this shared mutable state,
     // but with Swift and the actor model, the compiler helps us out.
     private var finishOrder: [String] = []
+    
+    private var isStopped = false
+    private let clock : ContinuousClock = ContinuousClock()
+    private let start : ContinuousClock.Instant
+    
+    init() {
+        start = clock.now
+    }
 
     // Racer crosses the finish line and gets their finishing position.
-    func crossTheFinishLine(name: String) -> Int {
+    func crossTheFinishLine(_ name: String) {
+        // We need to check 'isStopped' here in case the racer crossed the finish line after the race was already
+        // called off.
+        //
+        // Really? Yes. Some tasks are likely to be scheduled on different processor cores, and thus we've invited a
+        // "race condition". I think there should be a way to design this code better so that we don't have to do this
+        // check... but this makes for a good example of a race condition.
+        //
+        // The screenshot in the README shows what happens when this check doesn't exist.
+        if (isStopped) {
+            walkOffTheTrack(name)
+            return
+        }
+        
+        let end = clock.now
+        let duration = end - start
+
         // This is safe for concurrent access, as actors protect their internal state from being accessed simultaneously
         // by different tasks.
         finishOrder.append(name)
 
-        // Return the racer's finishing position.
-        return finishOrder.count
+        let position = finishOrder.count
+        if position == 1 {
+            log("\(name) 🏆 finished in position \(position) with a time of \(duration). They are the winner!")
+        } else {
+            log("\(name) finished in position \(position) with a time of \(duration). [isStopped: \(isStopped)]")
+        }
+    }
+    
+    func stopRace(_ raceTask: Task<(), Never>, reason: String) -> Void {
+        let end = clock.now
+        let duration = end - start
+
+        isStopped = true
+        raceTask.cancel()
+
+        log("")
+        log(reason)
+        log("The race went on for \(duration).")
+        log("")
+    }
+    
+    func walkOffTheTrack(_ name: String) {
+        let end = clock.now
+        let duration = end - start
+
+        log("\(name) made a good attempt, but did not finish the race. They ran for \(duration).")
     }
 }
 
@@ -52,20 +107,12 @@ func race(name: String, raceManager: RaceManager) async {
     } catch {
         // If the sleep throws an error, it is a CancellationError. The race is forecefully ended after 5 seconds and
         // any racers who haven't finished must stop and what off the track.
-        print("\(name) made a good attempt, but did not finish the race.")
+        await raceManager.walkOffTheTrack(name)
         return
     }
 
-    // Call the crossTheFinishLine method on the race manager.
-    // This method will return the racer's finishing position.
-    let position = await raceManager.crossTheFinishLine(name: name)
-
-    // Print the racer's finishing position.
-    if position == 1 {
-        print("\(name) 🏆 finished in position \(position). They are the winner!")
-    } else {
-        print("\(name) finished in position \(position).")
-    }
+    // The racers has completed the race!
+    await raceManager.crossTheFinishLine(name)
 }
 
 func main() async {
@@ -75,9 +122,10 @@ func main() async {
 
     // Start the racing tasks concurrently.
     let racers = ["Zoom", "Bolt", "Flash", "Speedster", "Blaze"]
-    print("📢 Welcome to the 42nd annual Swift Track & Field competition.")
-    print("We have \(racers.count) contestants running in the event. Let's see who is the fastest runner.")
-    print("... and they're off and running!\n")
+    log("📢 Welcome to the 42nd annual Swift Track & Field competition.")
+    log("We have \(racers.count) contestants running in the event. Let's see who is the fastest runner.")
+    log("... and they're off and running!")
+    log("")
     
     // Structured concurrency is a wrapping-heavy feature of Swift. The APIs tend to be 'async' functions which has the
     // unfortunate effect that the return value of the function is not an actual representation of the task, but of the
@@ -95,14 +143,13 @@ func main() async {
         }
     }
     
-    // Simulate a lightning storm after 5 seconds and cancel the race.
+    // Simulate a lightning storm after 5 seconds and stop the race.
     do {
         try await Task.sleep(nanoseconds: 5_000_000_000)
         // Because we used a task group, and we wrapped it in a Task (raceTask), we can conveniently cancel this
         // wrapper-task which propagates the cancellation to all the children tasks. Alternatively, if we had a reference
         // to the list of the individual racer tasks, we could await all of them. That would work.
-        raceTask.cancel()
-        print("\n⚡️ Lightning was spotted! The race is cancelled due to severe weather.\n")
+        await raceManager.stopRace(raceTask, reason: "⚡️ Lightning was spotted! The race is stopped due to severe weather.")
     
         // Remember, when we called 'raceTask.cancel', that didn't actually "stop the execution" of those tasks like
         // you might think it does (by contrast, think about the Unix 'kill' command which you can use to force kill
@@ -112,7 +159,7 @@ func main() async {
         // operations or the like.
         await raceTask.value
     } catch {
-        print("Unexpected. The cancellation task was itself cancelled.")
+        log("Unexpected. The cancellation task was itself cancelled.")
     }
 }
 
