@@ -127,28 +127,23 @@ func main() async {
     log("... and they're off and running!")
     log("")
     
-    // Structured concurrency is a wrapping-heavy feature of Swift. The APIs tend to be 'async' functions which has the
-    // unfortunate effect that the return value of the function is not an actual representation of the task, but of the
-    // task result. This means you don't have an object (like a "promise", or "task", or "completable future" or
-    // whatever you can relate this to in the programming languages that you personally know). You can do 'async let' but
-    // that variable is only awaitable, not cancellable. So, the solution is to wrap the withTaskGroup (awaitable
-    // function call) in a 'Task'. We can cancel this 'Task' at our leisure.
+    // Note: while a "task group" (a la the 'withTaskGroup' function) might seem like the way to control this set of
+    // tasks, I think just creating 'Task' objects directly is best. We can cancel the outer 'Task' at our leisure and
+    // it will propogate to the other tasks.
     let raceTask = Task {
-        await withTaskGroup(of: Void.self) { group in
-            for racer in racers {
-                group.addTask {
-                    await race(name: racer, raceManager: raceManager)
-                }
+        let tasks = racers.map({racer in
+            Task {
+                await race(name: racer, raceManager: raceManager)
             }
+        })
+        for task in tasks {
+            await task.value
         }
     }
     
     // Simulate a lightning storm after 5 seconds and stop the race.
     do {
         try await Task.sleep(nanoseconds: 5_000_000_000)
-        // Because we used a task group, and we wrapped it in a Task (raceTask), we can conveniently cancel this
-        // wrapper-task which propagates the cancellation to all the children tasks. Alternatively, if we had a reference
-        // to the list of the individual racer tasks, we could await all of them. That would work.
         await raceManager.stopRace(raceTask, reason: "⚡️ Lightning was spotted! The race is stopped due to severe weather.")
     
         // Remember, when we called 'raceTask.cancel', that didn't actually "stop the execution" of those tasks like

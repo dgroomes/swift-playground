@@ -232,7 +232,9 @@ General clean ups, TODOs and things I wish to implement for this project:
   cancellation looks in the code yet. Let's try it in the actors/racing demo.
 * [x] DONE Push more of the race management into the RaceManager actor. I think I need to synchronize the 'print'
   statements because the program techically can race if the 'raceTask.cancel' literally triggers the other tasks to
-  unsuspend on a different/available core (I'm 80% sure). 
+  unsuspend on a different/available core (I'm 80% sure).
+* [x] DONE (Yeah straight Tasks with a wrapper Task is great) I'm still confused about the purpose of tasks groups. Can you get the same effect as a task group by just using
+  an outer Task?
 
 
 ## Reference
