@@ -14,22 +14,23 @@ protocol Logger {
  */
 public class SimpleFileLogger: Logger {
 
-    // For simplicity, we will hardcode an absolute file path. On macOS, the "/usr/local/var/log" path should be a reasonable
-    // fit. No special permissions are needed and I see that at least a few other tools have logged there, like Redis, Kafka,
-    // and Zookeeper.
-    private let filePath = "/usr/local/var/log/swift-playground.log"
+    // For simplicity, we will hardcode an absolute file path. On macOS, the "~/Library/Logs/" path should be a
+    // reasonable fit. No special permissions are needed and I see that at least a few other tools have logged there,
+    // like JetBrains IDEs, HomeBrew, and some other random things.
     private let fileURL: URL
     private let loggerTimeFormatter: DateFormatter
 
     public init() {
-        fileURL = URL(fileURLWithPath: filePath)
+        let logsDirectory = FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent("Library/Logs")
+        fileURL = logsDirectory.appendingPathComponent("swift-playground.log")
         loggerTimeFormatter = DateFormatter()
         loggerTimeFormatter.dateFormat = "HH:mm:ss"
 
         // Create the log file if it does not already exist.
-        if !FileManager.default.fileExists(atPath: filePath) {
+        // Note: We assume the "~/Library/Logs" directory exists even though that's not a safe assumption.
+        if !FileManager.default.fileExists(atPath: fileURL.path) {
             // Create empty file
-            if !FileManager.default.createFile(atPath: filePath, contents: nil) {
+            if !FileManager.default.createFile(atPath: fileURL.path, contents: nil) {
                 fatalError("Error creating the log file.")
             }
         }

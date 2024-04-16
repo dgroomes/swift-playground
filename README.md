@@ -66,7 +66,7 @@ Follow these instructions to build and run a demo Swift program:
      the program, and not running it.
    * Let's check the contents of the log file using the following command.
      ```shell
-     cat /usr/local/var/log/swift-playground.log
+     cat ~/Library/Logs/swift-playground.log
      ```
    * The output will look something like this:
      ```text
