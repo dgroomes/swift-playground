@@ -47,7 +47,7 @@ Here are some miscellaneous notes/observations:
 Follow these instructions to build and run a demo Swift program:
 
 1. Pre-requisite: Swift
-   * I'm using Swift 5.8
+   * I'm using Swift 5.10
 2. Build and run the "file and logging" program:
    * 
      ```shell
