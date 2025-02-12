@@ -47,7 +47,7 @@ Here are some miscellaneous notes/observations:
 Follow these instructions to build and run a demo Swift program:
 
 1. Pre-requisite: Swift
-   * I'm using Swift 5.10
+   * I'm using Swift 6.0.3
 2. Build and run the "file and logging" program:
    * 
      ```shell
@@ -57,8 +57,8 @@ Follow these instructions to build and run a demo Swift program:
      ```text
      $ swift run
      Building for debugging...
-     [4/4] Linking SwiftPlaygroundFileLogging
-     Build complete! (0.76s)
+     [9/9] Applying SwiftPlaygroundFileLogging
+     Build of product 'SwiftPlaygroundFileLogging' complete! (2.49s)
      Welcome to my 'swift-playground'! Let's write some Swift code that writes to a file.
      The 'log' function is convenient. Calling code can use 'log' and the message gets printed to the screen and written to the log file.
      ```
@@ -235,6 +235,8 @@ General clean ups, TODOs and things I wish to implement for this project:
   unsuspend on a different/available core (I'm 80% sure).
 * [x] DONE (Yeah straight Tasks with a wrapper Task is great) I'm still confused about the purpose of tasks groups. Can you get the same effect as a task group by just using
   an outer Task?
+* [ ] Defect. When the lightning strikes, runners don't stop. This is a regression and after a `git bisect` I found that it happened in https://github.com/dgroomes/swift-playground/commit/3c6dc889c12b16249e9903ef46aa5aa8552bac02.
+   It looks like I wrote off task groups when I shouldn't have. Nice.
 
 
 ## Reference
