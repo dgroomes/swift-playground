@@ -11,7 +11,7 @@ log("")
 
 /*
  To learn about actors, let's invent a sample domain. Let's have multiple tasks compete against one another other in a
- simulated "race to the finish line" competition. The first task to finish is tƒhe winner. We'll simulate each task's
+ simulated "race to the finish line" competition. The first task to finish is the winner. We'll simulate each task's
  racing behavior (from start to finish) with the 'sleep' function over a random duration. When the first task completes,
  it will reference some "finishOrder" shared mutable state and declare itself the winner for finishing first. The
  other tasks will see, from the "finishOrder" state, that they did not finish first.
